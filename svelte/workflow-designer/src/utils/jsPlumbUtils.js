@@ -13,11 +13,28 @@ export function createActivityElementId(activityId) {
 }
 
 export function createSourceEndpoint(activityId, outcome) {
+    const fill = '#7da7f2';
+    const stroke = fill;
+
     return {
         type: "Dot",
         anchor: 'Continuous',
+        paintStyle: {
+            stroke: stroke,
+            fill: fill,
+            strokeWidth: 2
+        },
         isSource: true,
-        connector: ['Flowchart', { stub: [40, 60], gap: 0, cornerRadius: 5, alwaysRespectStubs: true }],
+        connector: ['StateMachine', {}],
+        connectorStyle: {
+            strokeWidth: 2,
+            stroke: stroke,
+            
+        },
+        connectorHoverStyle: {
+            strokeWidth: 2,
+            stroke: '#999999'
+        },
         dragOptions: {},
         uuid: createEndpointUuid(activityId, outcome),
         parameters: {
@@ -30,6 +47,8 @@ export function createSourceEndpoint(activityId, outcome) {
 }
 
 export function createJsPlumbInstance(element) {
+    const fill = '#7da7f2';
+    const stroke = fill;
 
     const p = jsPlumb.getInstance({
         DragOptions: {cursor: 'pointer', zIndex: 2000},
@@ -37,8 +56,13 @@ export function createJsPlumbInstance(element) {
             ['Arrow', {
                 location: 1,
                 visible: true,
-                width: 11,
-                length: 11
+                width: 20,
+                length: 10,
+                foldback: 0.8,
+                paintStyle: {
+                    stroke: stroke,
+                    fill: fill
+                }
             }]
         ],
         Container: element

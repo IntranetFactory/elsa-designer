@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@panzoom/panzoom": "^4.0.2",
+    "dagre": "^0.8.5",
     "jsplumb": "2.12.8",
     "sirv-cli": "^0.4.4"
   }
