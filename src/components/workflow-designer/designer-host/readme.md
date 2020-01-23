@@ -26,6 +26,16 @@
 
 ## Methods
 
+### `autoLayout() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `export(formatDescriptor: WorkflowFormatDescriptor) => Promise<void>`
 
 

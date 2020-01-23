@@ -9,8 +9,13 @@ export class JsPlumbUtils {
         ['Arrow', {
           location: 1,
           visible: true,
-          width: 11,
-          length: 11
+          width: 20,
+          length: 10,
+          foldback: 0.8,
+          paintStyle: {
+            stroke: '#7da7f2',
+            fill: '#7da7f2'
+          }
         }],
         ['Label', {
           location: 0.5,
@@ -37,7 +42,7 @@ export class JsPlumbUtils {
         strokeWidth: 2
       },
       isSource: true,
-      connector: ['Flowchart', { stub: [40, 60], gap: 0, cornerRadius: 5, alwaysRespectStubs: true }],
+      connector: ['StateMachine', { }],
       connectorStyle: {
         strokeWidth: 2,
         stroke: connectorFill

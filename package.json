@@ -44,6 +44,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "dagre": "^0.8.5",
     "dragscroll": "0.0.8",
     "handlebars": "^4.4.2",
     "jquery": "^3.4.1",

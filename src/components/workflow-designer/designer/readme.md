@@ -36,6 +36,16 @@ Type: `Promise<void>`
 
 
 
+### `autoLayout() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `getWorkflow() => Promise<any>`
 
 

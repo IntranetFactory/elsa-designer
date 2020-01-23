@@ -47,6 +47,11 @@ export class DesignerHost {
   }
 
   @Method()
+  async autoLayout() {
+    await this.designer.autoLayout();
+  }
+
+  @Method()
   async getWorkflow() {
     return await this.designer.getWorkflow();
   }

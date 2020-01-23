@@ -14,6 +14,7 @@ import uuid from 'uuid-browser/v4';
 import {Activity, ActivityDefinition, ActivityDisplayMode, Point, Workflow} from "../../../models";
 import ActivityManager from '../../../services/activity-manager';
 import {deepClone} from "../../../utils/deep-clone";
+import dagre from 'dagre';
 
 @Component({
   tag: 'wf-designer',
@@ -58,6 +59,45 @@ export class Designer {
       connections: []
     }
   }
+
+  @Method()
+  async autoLayout() {
+    var self = this;
+    var g = new dagre.graphlib.Graph();
+    var allNodes = document.querySelectorAll("[data-activity-id]");
+    g.setGraph({ nodesep: 100, ranksep: 100, marginx: 100, marginy: 100 });
+    g.setDefaultEdgeLabel(function () { return {}; });
+
+    allNodes.forEach(function (element) {
+      var activityId = element.getAttribute('data-activity-id');
+      var boundingClientRect = element.getBoundingClientRect();
+
+      g.setNode(activityId, {
+        width: boundingClientRect.width,
+        height: boundingClientRect.height
+      });
+    });
+
+    this.workflow.connections.forEach(function (connection) {
+      g.setEdge(
+        connection.sourceActivityId,
+        connection.destinationActivityId
+      );
+    });
+
+    dagre.layout(g);
+
+    g.nodes().forEach(function (n) {
+      var node = g.node(n);
+      var activity = self.findActivityById(n);
+
+      if (activity != undefined) {
+        activity.top = node.y - node.height / 2;
+        activity.left = node.x - node.width / 2;
+        self.updateActivityInternal(activity);
+      }
+    });
+  };
 
   @Method()
   async getWorkflow() {
@@ -170,6 +210,7 @@ export class Designer {
     return (
       [
         <wf-context-menu target={this.elem()}>
+          <wf-context-menu-item text="Auto Layout" onClick={this.onAutoLayoutClick}/>
           <wf-context-menu-item text="Add Activity" onClick={this.onAddActivityClick}/>
         </wf-context-menu>,
         <wf-context-menu ref={(el) => this.activityContextMenu = el}>
@@ -365,6 +406,10 @@ export class Designer {
       top: e.pageY - el.offsetTop
     };
     this.addActivityEvent.emit();
+  };
+
+  private onAutoLayoutClick = () => {
+    this.autoLayout();
   };
 
   private onDeleteActivityClick = async () => {
