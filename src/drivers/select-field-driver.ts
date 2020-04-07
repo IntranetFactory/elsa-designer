@@ -6,17 +6,25 @@ export class SelectFieldDriver implements FieldDriver {
   displayEditor = (activity: Activity, property: ActivityPropertyDescriptor): RenderResult => {
     const name: string = property.name;
     const label: string = property.label;
-    const value: string = activity.state[name] || '';
-    const items: Array<SelectItem> = property.options.items || [];
-    const itemsJson = encodeURI(JSON.stringify(items));
+    const stateProperty = activity.state[name];
+    const value = stateProperty != undefined ? stateProperty.value : '';
+    const items: Array<SelectItem> = property.options.Items || [];
+    const itemsValues = [];
+
+    items.forEach(function(item, index) {
+      itemsValues.push(item["label"]);
+    });
+
+    const itemsJson = encodeURI(JSON.stringify(itemsValues));
 
     return `<wf-select-field name="${ name }" label="${ label }" hint="${ property.hint }" data-items="${ itemsJson }" value="${ value }"></wf-select-field>`;
   };
 
   updateEditor = (activity: Activity, property: ActivityPropertyDescriptor, formData: FormData) => {
     const value = formData.get(property.name).toString();
-
-    activity.state[property.name] = value.trim();
+    activity.state[property.name] = {
+      value: value.trim()
+    };
   };
 
 }

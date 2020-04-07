@@ -5,11 +5,12 @@ export class ExpressionFieldDriver implements FieldDriver {
   displayEditor = (activity: Activity, property: ActivityPropertyDescriptor): RenderResult => {
     const name = property.name;
     const label = property.label;
-    const value: WorkflowExpression = activity.state[name] || { expression: '', syntax: 'Literal' };
+    const value: WorkflowExpression = activity.state[name] || { Expression: '', Type: 'Literal' };
+    const syntaxValue = value["value"] != undefined ? value["value"].Type : value.Type;
     const multiline: boolean = (property.options || {}).multiline || false;
-    const expressionValue = value.expression.replace(/"/g, '&quot;');
+    const expressionValue = value["value"] != undefined ? value["value"].Expression.replace(/"/g, '&quot;') : value.Expression.replace(/"/g, '&quot;');
 
-    return `<wf-expression-field name="${name}" label="${label}" hint="${property.hint}" value="${expressionValue}" syntax="${value.syntax}" multiline="${multiline}"></wf-expression-field>`;
+    return `<wf-expression-field name="${name}" label="${label}" hint="${property.hint}" value="${expressionValue}" syntax="${syntaxValue}" multiline="${multiline}"></wf-expression-field>`;
   };
 
   updateEditor = (activity: Activity, property: ActivityPropertyDescriptor, formData: FormData) => {
@@ -19,8 +20,11 @@ export class ExpressionFieldDriver implements FieldDriver {
     const syntax = formData.get(syntaxFieldName).toString();
 
     activity.state[property.name] = {
-      expression: expression,
-      syntax: syntax
+      value: {
+        type: syntax,
+        expression: expression,
+        typeName: syntax + "Expression",
+      }
     };
   };
 

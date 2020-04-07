@@ -18,7 +18,7 @@ export class DisplayManager {
   };
 
   public displayEditor = (activity: Activity, property: ActivityPropertyDescriptor): RenderResult => {
-    const driver = this.drivers[property.type];
+    const driver = this.drivers[property.type.toLowerCase()];
 
     if (!driver)
       return null;
@@ -27,7 +27,7 @@ export class DisplayManager {
   };
 
   public updateEditor = (activity: Activity, property: ActivityPropertyDescriptor, formData: FormData) => {
-    const driver = this.drivers[property.type];
+    const driver = this.drivers[property.type.toLowerCase()];
 
     if (!driver)
       return;
