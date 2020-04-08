@@ -37,7 +37,7 @@ export class DesignerHost {
   @Prop() workflow: Workflow;
   @Prop({ reflect: true, attribute: "canvas-height" }) canvasHeight: string;
   @Prop({ attribute: "data-activity-definitions" }) activityDefinitionsData: string;
-  @Prop({ attribute: "data-workflow" }) workflowData: string;
+  @Prop({ mutable: true, reflect: true, attribute: "data-workflow" }) workflowData: string;
   @Prop({ attribute: "readonly" }) readonly: boolean;
   @Prop({ attribute: "plugins" }) pluginsData: string;
 
@@ -122,6 +122,7 @@ export class DesignerHost {
 
   private onWorkflowChanged = (e: CustomEvent<Workflow>) => {
     this.workflowChanged.emit(e.detail);
+    this.workflowData = JSON.stringify(e.detail);
   };
 
   private initActivityDefinitions = () => {
